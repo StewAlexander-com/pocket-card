@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Pocket Card">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="42%" r="70%">
+      <stop offset="0%" stop-color="#14171c"/>
+      <stop offset="100%" stop-color="#0b0d10"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e8d9a8"/>
+      <stop offset="55%" stop-color="#c9a86a"/>
+      <stop offset="100%" stop-color="#8a6f3a"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <!-- Inside safe zone (center 80%) -->
+  <circle cx="256" cy="256" r="120" fill="none" stroke="url(#gold)" stroke-width="2" opacity="0.55"/>
+  <g fill="url(#gold)">
+    <path d="M256 154 L266 248 L360 256 L266 264 L256 358 L246 264 L152 256 L246 248 Z"/>
+    <circle cx="256" cy="256" r="6"/>
+  </g>
+</svg>
