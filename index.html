@@ -227,6 +227,51 @@
     text-shadow:0 1px 2px rgba(0,0,0,.9), 0 0 18px rgba(0,0,0,.55);
   }
 
+  /* Box-breathing diagram: square with labeled corners + arrow edges + traveling dot */
+  .boxbreath{
+    --box-size: min(300px, 78vw);
+    width:var(--box-size);height:var(--box-size);
+    margin:6px auto 14px;display:block;
+    filter:drop-shadow(0 2px 10px rgba(0,0,0,.55));
+  }
+  .boxbreath .edge{
+    stroke:var(--accent);stroke-width:2;fill:none;opacity:.9;
+    stroke-linecap:round;
+  }
+  .boxbreath .edge-dim{opacity:.35;stroke-dasharray:4 6}
+  .boxbreath .arrow-head{fill:var(--accent)}
+  .boxbreath .corner-dot{fill:var(--accent);opacity:.95}
+  .boxbreath .travel{
+    fill:#fbf4d6;
+    filter:drop-shadow(0 0 6px rgba(251,244,214,.9)) drop-shadow(0 0 14px rgba(240,206,134,.6));
+    animation:boxTravel 14s linear infinite;
+  }
+  /* Corner labels (IN / HOLD / OUT / RETURN) — sans, uppercase, small */
+  .boxbreath .corner-lbl{
+    font-family:"Hammersmith One",var(--sans);
+    font-size:13px;letter-spacing:.18em;
+    fill:var(--accent);text-transform:uppercase;
+  }
+  /* Edge labels: phase names (IN / HOLD / OUT) + count (4 / 4 / 6) */
+  .boxbreath .edge-phase{
+    font-family:"Hammersmith One",var(--sans);
+    font-size:15px;letter-spacing:.22em;
+    fill:var(--accent);text-transform:uppercase;
+  }
+  .boxbreath .edge-count{
+    font-family:"Days One",var(--sans);
+    font-size:26px;
+    fill:#fbf4d6;
+  }
+  /* Traveling dot: animated via SMIL animateMotion in the SVG (robust on iOS). */
+  @media (prefers-reduced-motion: reduce){
+    .boxbreath .travel,.boxbreath .travel *{display:none}
+  }
+  .breath-return{
+    font-family:var(--serif);font-style:italic;font-size:22px;
+    color:var(--fg);line-height:1.55;margin:0 0 16px;text-align:center;
+  }
+
   .close{
     font-style:italic;color:var(--accent);font-size:26px;letter-spacing:.04em;
     margin:16px 0 10px;
@@ -364,12 +409,73 @@
         <circle cx="256" cy="256" r="8" fill="url(#g)"/>
       </svg>
     </div>
-    <p class="breath">
-      <b>Breathe in</b> for four.<br/>
-      <b>Hold</b> for four.<br/>
-      <b>Breathe out</b> for six.<br/>
-      Now return to the task in front of you.
-    </p>
+    <!-- Box-breathing diagram: square with IN (top edge, 4s), HOLD (right edge, 4s), OUT (bottom edge, 6s).
+         Fourth edge is the gentle "return" back to start. Accessible label provided for screen readers. -->
+    <svg class="boxbreath" viewBox="0 0 320 320" role="img"
+         aria-label="Box breathing: breathe in for four, hold for four, breathe out for six, return to the task.">
+      <!-- Invisible path defining the full loop (top → right → bottom → left back to start).
+           Corners are slightly inset so labels outside the box don't clip. -->
+      <defs>
+        <path id="bb-loop" d="M 60 60 L 260 60 L 260 260 L 60 260 L 60 60" />
+      </defs>
+
+      <!-- Arrowhead marker -->
+      <defs>
+        <marker id="bb-arrow" viewBox="0 0 10 10" refX="8" refY="5"
+                markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 Z" class="arrow-head"/>
+        </marker>
+      </defs>
+
+      <!-- Active edges (solid, with arrowheads mid-edge) -->
+      <!-- Top: IN → right -->
+      <line class="edge" x1="60" y1="60" x2="260" y2="60" marker-end="url(#bb-arrow)"/>
+      <!-- Right: HOLD ↓ down -->
+      <line class="edge" x1="260" y1="60" x2="260" y2="260" marker-end="url(#bb-arrow)"/>
+      <!-- Bottom: OUT ← left -->
+      <line class="edge" x1="260" y1="260" x2="60" y2="260" marker-end="url(#bb-arrow)"/>
+      <!-- Left: RETURN ↑ up (dimmed, dashed — the quiet recovery edge) -->
+      <line class="edge edge-dim" x1="60" y1="260" x2="60" y2="60" marker-end="url(#bb-arrow)"/>
+
+      <!-- Corner dots -->
+      <circle class="corner-dot" cx="60"  cy="60"  r="4"/>
+      <circle class="corner-dot" cx="260" cy="60"  r="4"/>
+      <circle class="corner-dot" cx="260" cy="260" r="4"/>
+      <circle class="corner-dot" cx="60"  cy="260" r="4"/>
+
+      <!-- Phase labels (outside each edge) and count digits (just inside each edge) -->
+      <!-- TOP edge: IN above, 4 below -->
+      <text class="edge-phase" x="160" y="40"  text-anchor="middle">In</text>
+      <text class="edge-count" x="160" y="88"  text-anchor="middle">4</text>
+
+      <!-- RIGHT edge: HOLD rotated outside, 4 kept upright inside -->
+      <text class="edge-phase" x="280" y="160" text-anchor="middle" dominant-baseline="middle"
+            transform="rotate(90 280 160)">Hold</text>
+      <text class="edge-count" x="232" y="168" text-anchor="middle">4</text>
+
+      <!-- BOTTOM edge: 6 above, OUT below -->
+      <text class="edge-count" x="160" y="248" text-anchor="middle">6</text>
+      <text class="edge-phase" x="160" y="292" text-anchor="middle">Out</text>
+
+      <!-- LEFT edge: RETURN rotated outside (no count, quieter) -->
+      <text class="edge-phase" x="40" y="160" text-anchor="middle" dominant-baseline="middle" opacity=".55"
+            transform="rotate(-90 40 160)">Return</text>
+
+      <!-- Traveling breath dot: 16s total loop = IN 4s + HOLD 4s + OUT 6s + RETURN 2s.
+           keyTimes are fractions of 16s; keyPoints are fractions of the loop path. -->
+      <g class="travel">
+        <circle r="6" cx="0" cy="0">
+          <animateMotion dur="16s" repeatCount="indefinite"
+                         rotate="0" calcMode="linear"
+                         keyTimes="0; 0.25; 0.5; 0.875; 1"
+                         keyPoints="0; 0.25; 0.5; 0.75; 1">
+            <mpath href="#bb-loop"/>
+          </animateMotion>
+        </circle>
+      </g>
+    </svg>
+
+    <p class="breath-return">Now return to the task in front of you.</p>
     <div class="close">— Accipio. Ludo. —</div>
     <div class="foot">BREATHE · NAME · CHOOSE · LOG</div>
   </div>
