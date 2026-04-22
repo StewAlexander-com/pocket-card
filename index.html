@@ -20,19 +20,19 @@
 <link rel="icon" type="image/svg+xml" href="./icon.svg"/>
 <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png"/>
 <link rel="apple-touch-icon" href="./apple-touch-icon.png"/>
-<link rel="mask-icon" href="./icon.svg" color="#c9a86a"/>
+<link rel="mask-icon" href="./icon.svg" color="#e0c07a"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Inter:wght@500;600;700&display=swap"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,500&family=Inter:wght@500;600;700&display=swap"/>
 <style>
   :root{
     --bg:#0b0d10;
-    --fg:#f4ecd0;            /* body: brighter parchment */
-    --fg-bold:#f6f1e0;        /* bolds: near-white warm */
-    --fg-cool:#eef2ff;        /* bold cool-white tint */
-    --dim:#b8b29a;            /* footer/tag: brighter */
-    --rule:#33322e;
-    --accent:#e0c07a;          /* headings/accents: brighter gold */
+    --fg:#f4ecd0;
+    --fg-bold:#f6f1e0;
+    --fg-cool:#eef2ff;
+    --dim:#c9c4ad;
+    --rule:#3a3832;
+    --accent:#e0c07a;
     --accent-2:#f3e4b4;
     --gold-grad:linear-gradient(180deg,#f6ecc4 0%,#e0c07a 55%,#a4824a 100%);
     --serif:"Cormorant Garamond","Georgia",ui-serif,serif;
@@ -42,11 +42,11 @@
   html,body{margin:0;background:var(--bg);color:var(--fg);min-height:100vh;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
   body{
     font-family:var(--serif);
-    font-size:16px;
-    line-height:1.35;
+    font-size:20px;
+    line-height:1.55;
     background:
-      radial-gradient(900px 520px at 50% -10%, #181b22 0%, transparent 60%),
-      radial-gradient(700px 420px at 50% 110%, #12141a 0%, transparent 55%),
+      radial-gradient(1000px 560px at 50% -10%, #181b22 0%, transparent 60%),
+      radial-gradient(780px 460px at 50% 110%, #12141a 0%, transparent 55%),
       var(--bg);
     overflow-x:hidden;
   }
@@ -57,22 +57,22 @@
   }
   main{
     position:relative;z-index:2;
-    max-width:560px;margin:0 auto;
+    max-width:620px;margin:0 auto;
     padding:
-      calc(8px + env(safe-area-inset-top)) 18px
-      calc(12px + env(safe-area-inset-bottom));
+      calc(20px + env(safe-area-inset-top)) 22px
+      calc(28px + env(safe-area-inset-bottom));
   }
 
   /* Header */
-  .head{display:flex;align-items:center;justify-content:center;gap:10px;margin:0 0 4px}
+  .head{display:flex;align-items:center;justify-content:center;gap:12px;margin:0 0 6px}
   .sigil{
-    width:28px;height:28px;display:block;flex:none;
+    width:42px;height:42px;display:block;flex:none;
     animation:breathe 7s ease-in-out infinite;
   }
   .sigil .star{transform-origin:256px 256px;animation:twinkle 5.5s ease-in-out infinite}
   .sigil .shimmer{mix-blend-mode:screen;opacity:0;animation:shimmer 5s ease-in-out infinite}
   @keyframes breathe{0%,100%{transform:scale(1);opacity:.9}50%{transform:scale(1.05);opacity:1}}
-  @keyframes twinkle{0%,100%{filter:drop-shadow(0 0 0 rgba(246,236,196,0))}50%{filter:drop-shadow(0 0 5px rgba(246,236,196,.7))}}
+  @keyframes twinkle{0%,100%{filter:drop-shadow(0 0 0 rgba(246,236,196,0))}50%{filter:drop-shadow(0 0 6px rgba(246,236,196,.7))}}
   @keyframes shimmer{
     0%,100%{opacity:0;transform:translateX(-60%)}
     45%{opacity:.9}
@@ -86,23 +86,23 @@
 
   h1{
     font-family:var(--sans);
-    font-size:11px;letter-spacing:.38em;text-transform:uppercase;
+    font-size:14px;letter-spacing:.38em;text-transform:uppercase;
     color:var(--accent);margin:0;font-weight:700;
   }
   .tag{
-    text-align:center;color:var(--dim);font-style:italic;
-    font-family:var(--serif);font-size:15px;margin:0 0 6px;
+    text-align:center;color:var(--fg);opacity:.85;font-style:italic;
+    font-family:var(--serif);font-size:19px;margin:2px 0 14px;
   }
 
   /* Mantra */
-  .mantra{text-align:center;margin:4px 0 6px;font-family:var(--serif)}
+  .mantra{text-align:center;margin:14px 0 10px;font-family:var(--serif)}
   .mantra b{
-    display:block;font-weight:700;font-size:20px;line-height:1.25;
+    display:block;font-weight:700;font-size:30px;line-height:1.3;
     background:var(--gold-grad);
     -webkit-background-clip:text;background-clip:text;color:transparent;
-    opacity:0;transform:translateY(4px);
-    animation:rise .8s ease-out forwards;
-    text-shadow:0 0 18px rgba(246,236,196,.08);
+    opacity:0;transform:translateY(5px);
+    animation:rise .9s ease-out forwards;
+    text-shadow:0 0 22px rgba(246,236,196,.08);
   }
   .mantra b:nth-child(1){animation-delay:.12s}
   .mantra b:nth-child(2){animation-delay:.36s}
@@ -111,56 +111,82 @@
   @media (prefers-reduced-motion: reduce){.mantra b{opacity:1;transform:none;animation:none}}
 
   .preamble{
-    max-width:520px;margin:6px auto 8px;text-align:center;
-    font-family:var(--serif);font-style:italic;font-size:14px;line-height:1.45;
-    color:var(--fg);opacity:.92;
+    max-width:560px;margin:14px auto 18px;text-align:center;
+    font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.55;
+    color:var(--fg);opacity:.95;
   }
 
   /* Sections */
   h2{
     font-family:var(--sans);
-    font-size:11px;letter-spacing:.26em;text-transform:uppercase;
+    font-size:14px;letter-spacing:.26em;text-transform:uppercase;
     color:var(--accent);border-bottom:1px solid var(--rule);
-    padding-bottom:4px;margin:10px 0 4px;font-weight:700;
+    padding-bottom:8px;margin:22px 0 12px;font-weight:700;
   }
-  ol,ul{padding-left:20px;margin:3px 0}
-  li{margin:3px 0;font-size:14.5px;line-height:1.4}
-  li ul{margin-top:2px}
-  li::marker{color:var(--accent)}
+  ol,ul{padding-left:26px;margin:8px 0}
+  li{margin:11px 0;font-size:20px;line-height:1.55}
+  li ul{margin-top:6px}
+  li::marker{color:var(--accent);font-weight:700}
   b,strong{
     color:var(--fg-cool);
     font-weight:700;
-    /* subtle cool-white glow on bolded text */
-    text-shadow:0 0 10px rgba(200,215,255,.18);
+    text-shadow:0 0 10px rgba(200,215,255,.22);
   }
-  /* Accent bold (e.g. "First arrow:") keeps gold so it doesn't compete */
   .lbl{color:var(--accent);font-weight:700;letter-spacing:.02em;text-shadow:none}
 
   .evening{
     text-align:center;font-family:var(--serif);font-style:italic;
-    font-size:14px;margin:4px 0 0;color:var(--fg-bold);line-height:1.4;
+    font-size:20px;margin:18px 0 0;color:var(--fg-bold);line-height:1.5;
   }
+
+  /* Bottom flourish fills the blank space */
+  .finale{
+    margin-top:26px;padding-top:20px;
+    border-top:1px solid var(--rule);
+    text-align:center;
+  }
+  .finale .orn{
+    display:flex;align-items:center;justify-content:center;gap:14px;
+    color:var(--accent);opacity:.7;margin:0 0 14px;
+  }
+  .finale .orn::before,.finale .orn::after{
+    content:"";height:1px;flex:1;max-width:80px;
+    background:linear-gradient(90deg,transparent,var(--accent),transparent);
+  }
+  .finale .orn svg{width:28px;height:28px;opacity:.9;animation:breathe 7s ease-in-out infinite}
+
+  .breath{
+    font-family:var(--serif);font-style:italic;font-size:18px;color:var(--fg);opacity:.9;
+    line-height:1.6;margin:0 0 14px;
+  }
+  .breath b{color:var(--accent);text-shadow:none;font-weight:600;font-style:normal;letter-spacing:.04em}
 
   .close{
-    text-align:center;margin-top:10px;font-style:italic;
-    color:var(--accent);font-size:15px;letter-spacing:.04em;
+    font-style:italic;color:var(--accent);font-size:22px;letter-spacing:.04em;
+    margin:14px 0 8px;
   }
   .foot{
-    text-align:center;margin-top:3px;color:var(--dim);
-    font-family:var(--sans);font-size:10px;letter-spacing:.34em;font-weight:600;
+    color:var(--fg);opacity:.8;
+    font-family:var(--sans);font-size:13px;letter-spacing:.32em;font-weight:600;
+    margin-top:6px;
   }
 
-  /* Install hint (hidden by default, only shows on iOS Safari non-standalone) */
+  /* Install hint */
   .ios-hint{
-    display:none;margin:8px auto 0;max-width:420px;
-    padding:7px 12px;border:1px solid var(--rule);border-radius:10px;
-    color:var(--dim);font-family:var(--sans);font-size:11px;line-height:1.4;text-align:center;
+    display:none;margin:22px auto 0;max-width:480px;
+    padding:12px 14px;border:1px solid var(--rule);border-radius:12px;
+    color:var(--fg);opacity:.85;font-family:var(--sans);font-size:14px;line-height:1.5;text-align:center;
   }
   .ios-hint b{color:var(--accent);text-shadow:none}
-  .ios-hint svg{vertical-align:-2px;margin:0 2px;width:12px;height:12px}
+  .ios-hint svg{vertical-align:-3px;margin:0 3px;width:15px;height:15px}
   body.is-ios-safari:not(.is-standalone) .ios-hint{display:block}
-  /* Hide install/top buttons by default to save space; show only if user installs */
   .actions{display:none}
+
+  @media (min-width:680px){
+    body{font-size:21px}
+    li{font-size:21px}
+    .mantra b{font-size:34px}
+  }
 </style>
 </head>
 <body>
@@ -203,21 +229,21 @@
     <b>The alarm is not the truth.</b>
   </div>
 
-  <p class="preamble">The anxious forecast is a hypothesis, not a verdict. Run small experiments on the fear.</p>
+  <p class="preamble">The anxious forecast is a guess, not a verdict. Test it. Ask for evidence.</p>
 
   <h2>When the storm-brain fires</h2>
   <ol>
     <li><b>Name it.</b> One sentence. No adjectives.</li>
-    <li><b>Ask it.</b> What's the evidence? The real odds?</li>
-    <li><b>Choose:</b> thin evidence → label "old alarm," release. Real evidence → 3 prep steps, do step 1 today.</li>
-    <li><b>Log one good thing.</b> One sentence. Daily.</li>
+    <li><b>Ask for evidence.</b> What's actually true? What are the real odds?</li>
+    <li><b>Choose:</b> if the evidence is thin, call it an <em>old alarm</em> and let it go. If it's real, write three small prep steps and do the first one today.</li>
+    <li><b>Log one good thing.</b> One sentence. Every day.</li>
   </ol>
 
-  <h2>Set down, gently</h2>
+  <h2>Set it down, gently</h2>
   <ul>
-    <li>The word "stupid." It's an old alarm, not a flaw.</li>
-    <li>Rehearsing doom. Worry is a tax, not preparation.</li>
-    <li>Comparing every unknown to a Balrog. Most are just Tuesdays.</li>
+    <li>The word <b>"stupid."</b> It's an old alarm, not a flaw.</li>
+    <li><b>Rehearsing disasters.</b> Worry is a tax, not a plan.</li>
+    <li>Treating every unknown like a <b>Balrog.</b> Most are just Tuesdays.</li>
   </ul>
 
   <h2>The lines that hold</h2>
@@ -228,17 +254,32 @@
     <li>I refuse to open my arms to oblivion.</li>
   </ul>
 
-  <p class="evening">Tonight: Did the feared thing happen? Did I handle what did?</p>
+  <p class="evening"><b style="color:var(--accent);text-shadow:none;font-weight:700;letter-spacing:.02em">Tonight:</b> Did the feared thing happen? Did I handle what did?</p>
 
-  <div class="close">— Accipio. Ludo. —</div>
-  <div class="foot">BREATHE · NAME · CHOOSE · LOG</div>
+  <div class="finale">
+    <div class="orn" aria-hidden="true">
+      <svg viewBox="0 0 512 512">
+        <circle cx="256" cy="256" r="180" fill="none" stroke="url(#g)" stroke-width="3" opacity=".6"/>
+        <path d="M256 104 L268 244 L408 256 L268 268 L256 408 L244 268 L104 256 L244 244 Z" fill="url(#g)"/>
+        <circle cx="256" cy="256" r="8" fill="url(#g)"/>
+      </svg>
+    </div>
+    <p class="breath">
+      <b>Breathe in</b> for four.<br/>
+      <b>Hold</b> for four.<br/>
+      <b>Breathe out</b> for six.<br/>
+      Now return to the task in front of you.
+    </p>
+    <div class="close">— Accipio. Ludo. —</div>
+    <div class="foot">BREATHE · NAME · CHOOSE · LOG</div>
+  </div>
 
   <div class="actions">
     <button class="install" id="installBtn" hidden>Install</button>
   </div>
 
   <div class="ios-hint" role="note">
-    Install: tap
+    Install on iPhone: tap
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 8 5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>
     <b>Share</b> → <b>Add to Home Screen</b>
   </div>
