@@ -67,14 +67,36 @@
   }
   /* Header sigil */
   .sigil{
-    display:block;margin:0 auto 14px;width:56px;height:56px;opacity:.95;
+    display:block;margin:0 auto 14px;width:56px;height:56px;
     animation:breathe 7s ease-in-out infinite;
+    transform-origin:center;
+  }
+  .sigil .star{
+    transform-origin:256px 256px;
+    animation:twinkle 5.5s ease-in-out infinite;
+  }
+  .sigil .shimmer{
+    mix-blend-mode:screen;opacity:0;
+    animation:shimmer 5s ease-in-out infinite;
   }
   @keyframes breathe{
     0%,100%{transform:scale(1);opacity:.85}
     50%{transform:scale(1.05);opacity:1}
   }
-  @media (prefers-reduced-motion: reduce){.sigil{animation:none}}
+  @keyframes twinkle{
+    0%,100%{filter:drop-shadow(0 0 0 rgba(232,217,168,0))}
+    50%{filter:drop-shadow(0 0 6px rgba(232,217,168,.55))}
+  }
+  @keyframes shimmer{
+    0%,100%{opacity:0;transform:translateX(-60%)}
+    45%{opacity:.85}
+    60%{opacity:.85;transform:translateX(60%)}
+    75%{opacity:0;transform:translateX(60%)}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .sigil,.sigil .star,.sigil .shimmer{animation:none}
+    .sigil .shimmer{display:none}
+  }
 
   h1{
     font-family:var(--sans);
@@ -112,6 +134,15 @@
   .mantra b:nth-child(1){animation-delay:.15s}
   .mantra b:nth-child(2){animation-delay:.45s}
   .mantra b:nth-child(3){animation-delay:.75s}
+  .preamble{
+    max-width:540px;margin:0 auto 12px;text-align:center;
+    font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.6;
+    color:var(--fg);opacity:.9;
+  }
+  .evening{
+    text-align:center;font-family:var(--serif);font-style:italic;
+    font-size:21px;margin:10px 0 0;color:var(--accent-2);
+  }
   @keyframes rise{to{opacity:1;transform:none}}
   @media (prefers-reduced-motion: reduce){.mantra b{opacity:1;transform:none;animation:none}}
 
@@ -173,10 +204,25 @@
         <stop offset="55%" stop-color="#c9a86a"/>
         <stop offset="100%" stop-color="#8a6f3a"/>
       </linearGradient>
+      <linearGradient id="sweep" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#fff" stop-opacity="0"/>
+        <stop offset="45%" stop-color="#fff" stop-opacity="0"/>
+        <stop offset="50%" stop-color="#fff" stop-opacity=".85"/>
+        <stop offset="55%" stop-color="#fff" stop-opacity="0"/>
+        <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+      </linearGradient>
+      <clipPath id="starClip">
+        <path d="M256 104 L268 244 L408 256 L268 268 L256 408 L244 268 L104 256 L244 244 Z"/>
+      </clipPath>
     </defs>
     <circle cx="256" cy="256" r="180" fill="none" stroke="url(#g)" stroke-width="3" opacity=".55"/>
-    <path d="M256 104 L268 244 L408 256 L268 268 L256 408 L244 268 L104 256 L244 244 Z" fill="url(#g)"/>
-    <circle cx="256" cy="256" r="8" fill="url(#g)"/>
+    <g class="star">
+      <path d="M256 104 L268 244 L408 256 L268 268 L256 408 L244 268 L104 256 L244 244 Z" fill="url(#g)"/>
+      <circle cx="256" cy="256" r="8" fill="url(#g)"/>
+    </g>
+    <g clip-path="url(#starClip)">
+      <rect class="shimmer" x="-40" y="0" width="220" height="512" fill="url(#sweep)"/>
+    </g>
   </svg>
 
   <h1>Pocket Card</h1>
@@ -187,6 +233,8 @@
     <b>I have the arsenal.</b>
     <b>The alarm is not the truth.</b>
   </div>
+
+  <p class="preamble">The anxious forecast is a hypothesis, not a verdict. Ask for evidence. Run small experiments on the fear — that's what a scientist does with a noisy signal.</p>
 
   <div class="orn" aria-hidden="true"><span>✦</span></div>
 
@@ -203,6 +251,14 @@
     <li><b>Log one good thing.</b> One sentence. Every day.</li>
   </ol>
 
+  <h2>Set it down, gently</h2>
+  <ul>
+    <li>The word "stupid." It's not stupid; it's an old alarm.</li>
+    <li>The identity of the one who barely escaped. One day, not a life sentence.</li>
+    <li>Pre-living disasters with tiny probability. Rehearsing doom is a tax, not preparation.</li>
+    <li>Comparing every unknown to the Balrog. Most new things are just Tuesdays.</li>
+  </ul>
+
   <h2>The lines that hold</h2>
   <ul>
     <li><b>First arrow:</b> the fact.</li>
@@ -211,6 +267,9 @@
     <li>My life has meaning and hard-won glory.</li>
     <li>I refuse to open my arms to oblivion.</li>
   </ul>
+
+  <h2>Tonight, one question</h2>
+  <p class="evening">Did the feared thing happen? Did I handle what did?</p>
 
   <div class="close">— Accipio. Ludo. —</div>
   <div class="foot">BREATHE · NAME · CHOOSE · LOG</div>
