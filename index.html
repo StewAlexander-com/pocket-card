@@ -23,36 +23,33 @@
 <link rel="mask-icon" href="./icon.svg" color="#c9a86a"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Inter:wght@400;500;600&display=swap"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Inter:wght@500;600;700&display=swap"/>
 <style>
   :root{
     --bg:#0b0d10;
-    --bg-2:#14171c;
-    --fg:#e8d9a8;
-    --dim:#a9a48f;
-    --rule:#2a2a28;
-    --accent:#c9a86a;
-    --accent-2:#e8d9a8;
-    --gold-grad:linear-gradient(180deg,#e8d9a8 0%,#c9a86a 55%,#8a6f3a 100%);
+    --fg:#f4ecd0;            /* body: brighter parchment */
+    --fg-bold:#f6f1e0;        /* bolds: near-white warm */
+    --fg-cool:#eef2ff;        /* bold cool-white tint */
+    --dim:#b8b29a;            /* footer/tag: brighter */
+    --rule:#33322e;
+    --accent:#e0c07a;          /* headings/accents: brighter gold */
+    --accent-2:#f3e4b4;
+    --gold-grad:linear-gradient(180deg,#f6ecc4 0%,#e0c07a 55%,#a4824a 100%);
     --serif:"Cormorant Garamond","Georgia",ui-serif,serif;
     --sans:"Inter",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
-  }
-  @media (prefers-reduced-motion: no-preference){
-    :root{--ease:cubic-bezier(.2,.7,.2,1)}
   }
   *{box-sizing:border-box}
   html,body{margin:0;background:var(--bg);color:var(--fg);min-height:100vh;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
   body{
     font-family:var(--serif);
-    font-size:22px;
-    line-height:1.7;
+    font-size:16px;
+    line-height:1.35;
     background:
-      radial-gradient(1200px 700px at 50% -10%, #16191f 0%, transparent 60%),
-      radial-gradient(800px 500px at 50% 110%, #12141a 0%, transparent 55%),
+      radial-gradient(900px 520px at 50% -10%, #181b22 0%, transparent 60%),
+      radial-gradient(700px 420px at 50% 110%, #12141a 0%, transparent 55%),
       var(--bg);
     overflow-x:hidden;
   }
-  /* Subtle film grain */
   body::before{
     content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.035;
     background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
@@ -60,37 +57,26 @@
   }
   main{
     position:relative;z-index:2;
-    max-width:640px;margin:0 auto;
+    max-width:560px;margin:0 auto;
     padding:
-      calc(36px + env(safe-area-inset-top)) 26px
-      calc(56px + env(safe-area-inset-bottom));
+      calc(8px + env(safe-area-inset-top)) 18px
+      calc(12px + env(safe-area-inset-bottom));
   }
-  /* Header sigil */
+
+  /* Header */
+  .head{display:flex;align-items:center;justify-content:center;gap:10px;margin:0 0 4px}
   .sigil{
-    display:block;margin:0 auto 14px;width:56px;height:56px;
+    width:28px;height:28px;display:block;flex:none;
     animation:breathe 7s ease-in-out infinite;
-    transform-origin:center;
   }
-  .sigil .star{
-    transform-origin:256px 256px;
-    animation:twinkle 5.5s ease-in-out infinite;
-  }
-  .sigil .shimmer{
-    mix-blend-mode:screen;opacity:0;
-    animation:shimmer 5s ease-in-out infinite;
-  }
-  @keyframes breathe{
-    0%,100%{transform:scale(1);opacity:.85}
-    50%{transform:scale(1.05);opacity:1}
-  }
-  @keyframes twinkle{
-    0%,100%{filter:drop-shadow(0 0 0 rgba(232,217,168,0))}
-    50%{filter:drop-shadow(0 0 6px rgba(232,217,168,.55))}
-  }
+  .sigil .star{transform-origin:256px 256px;animation:twinkle 5.5s ease-in-out infinite}
+  .sigil .shimmer{mix-blend-mode:screen;opacity:0;animation:shimmer 5s ease-in-out infinite}
+  @keyframes breathe{0%,100%{transform:scale(1);opacity:.9}50%{transform:scale(1.05);opacity:1}}
+  @keyframes twinkle{0%,100%{filter:drop-shadow(0 0 0 rgba(246,236,196,0))}50%{filter:drop-shadow(0 0 5px rgba(246,236,196,.7))}}
   @keyframes shimmer{
     0%,100%{opacity:0;transform:translateX(-60%)}
-    45%{opacity:.85}
-    60%{opacity:.85;transform:translateX(60%)}
+    45%{opacity:.9}
+    60%{opacity:.9;transform:translateX(60%)}
     75%{opacity:0;transform:translateX(60%)}
   }
   @media (prefers-reduced-motion: reduce){
@@ -100,230 +86,189 @@
 
   h1{
     font-family:var(--sans);
-    font-size:13px;letter-spacing:.42em;text-transform:uppercase;
-    color:var(--accent);text-align:center;margin:0 0 8px;font-weight:500;
+    font-size:11px;letter-spacing:.38em;text-transform:uppercase;
+    color:var(--accent);margin:0;font-weight:700;
   }
   .tag{
     text-align:center;color:var(--dim);font-style:italic;
-    font-family:var(--serif);font-size:21px;margin:0 0 36px;
+    font-family:var(--serif);font-size:15px;margin:0 0 6px;
   }
-  /* Ornamental divider */
-  .orn{
-    display:flex;align-items:center;justify-content:center;gap:10px;
-    color:var(--accent);opacity:.55;margin:24px 0;
-  }
-  .orn::before,.orn::after{
-    content:"";height:1px;flex:1;max-width:80px;
-    background:linear-gradient(90deg,transparent,var(--accent),transparent);
-  }
-  .orn span{font-size:10px;letter-spacing:.4em}
 
-  .mantra{
-    text-align:center;margin:32px 0 40px;
-    font-family:var(--serif);
-  }
+  /* Mantra */
+  .mantra{text-align:center;margin:4px 0 6px;font-family:var(--serif)}
   .mantra b{
-    display:block;
-    font-weight:600;font-size:30px;line-height:1.45;
-    letter-spacing:.005em;
+    display:block;font-weight:700;font-size:20px;line-height:1.25;
     background:var(--gold-grad);
     -webkit-background-clip:text;background-clip:text;color:transparent;
-    opacity:0;transform:translateY(6px);
-    animation:rise .9s var(--ease,ease-out) forwards;
+    opacity:0;transform:translateY(4px);
+    animation:rise .8s ease-out forwards;
+    text-shadow:0 0 18px rgba(246,236,196,.08);
   }
-  .mantra b:nth-child(1){animation-delay:.15s}
-  .mantra b:nth-child(2){animation-delay:.45s}
-  .mantra b:nth-child(3){animation-delay:.75s}
-  .preamble{
-    max-width:540px;margin:0 auto 12px;text-align:center;
-    font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.6;
-    color:var(--fg);opacity:.9;
-  }
-  .evening{
-    text-align:center;font-family:var(--serif);font-style:italic;
-    font-size:21px;margin:10px 0 0;color:var(--accent-2);
-  }
+  .mantra b:nth-child(1){animation-delay:.12s}
+  .mantra b:nth-child(2){animation-delay:.36s}
+  .mantra b:nth-child(3){animation-delay:.60s}
   @keyframes rise{to{opacity:1;transform:none}}
   @media (prefers-reduced-motion: reduce){.mantra b{opacity:1;transform:none;animation:none}}
 
+  .preamble{
+    max-width:520px;margin:6px auto 8px;text-align:center;
+    font-family:var(--serif);font-style:italic;font-size:14px;line-height:1.45;
+    color:var(--fg);opacity:.92;
+  }
+
+  /* Sections */
   h2{
     font-family:var(--sans);
-    font-size:13px;letter-spacing:.32em;text-transform:uppercase;
+    font-size:11px;letter-spacing:.26em;text-transform:uppercase;
     color:var(--accent);border-bottom:1px solid var(--rule);
-    padding-bottom:10px;margin:40px 0 18px;font-weight:600;
+    padding-bottom:4px;margin:10px 0 4px;font-weight:700;
   }
-  ol,ul{padding-left:26px;margin:14px 0}
-  li{margin:14px 0}
-  li ul{margin-top:10px}
+  ol,ul{padding-left:20px;margin:3px 0}
+  li{margin:3px 0;font-size:14.5px;line-height:1.4}
+  li ul{margin-top:2px}
   li::marker{color:var(--accent)}
-  b,strong{color:var(--accent-2);font-weight:600}
+  b,strong{
+    color:var(--fg-cool);
+    font-weight:700;
+    /* subtle cool-white glow on bolded text */
+    text-shadow:0 0 10px rgba(200,215,255,.18);
+  }
+  /* Accent bold (e.g. "First arrow:") keeps gold so it doesn't compete */
+  .lbl{color:var(--accent);font-weight:700;letter-spacing:.02em;text-shadow:none}
+
+  .evening{
+    text-align:center;font-family:var(--serif);font-style:italic;
+    font-size:14px;margin:4px 0 0;color:var(--fg-bold);line-height:1.4;
+  }
+
   .close{
-    text-align:center;margin-top:44px;font-style:italic;
-    color:var(--accent);font-size:24px;letter-spacing:.04em;
+    text-align:center;margin-top:10px;font-style:italic;
+    color:var(--accent);font-size:15px;letter-spacing:.04em;
   }
   .foot{
-    text-align:center;margin-top:16px;color:var(--dim);
-    font-family:var(--sans);font-size:13px;letter-spacing:.38em;
+    text-align:center;margin-top:3px;color:var(--dim);
+    font-family:var(--sans);font-size:10px;letter-spacing:.34em;font-weight:600;
   }
 
-  /* Actions */
-  .actions{
-    display:flex;gap:10px;justify-content:center;flex-wrap:wrap;
-    margin-top:28px;
-  }
-  button{
-    background:transparent;border:1px solid var(--accent);color:var(--accent);
-    padding:13px 22px;border-radius:999px;
-    font-family:var(--sans);font-size:13px;letter-spacing:.22em;text-transform:uppercase;
-    cursor:pointer;transition:background .2s ease, color .2s ease, transform .2s ease;
-    min-height:44px;
-  }
-  button:hover,button:focus-visible{background:var(--accent);color:var(--bg);outline:none}
-  button:active{transform:translateY(1px)}
-  button[hidden]{display:none}
-
-  /* iOS install hint */
+  /* Install hint (hidden by default, only shows on iOS Safari non-standalone) */
   .ios-hint{
-    display:none;margin:26px auto 0;max-width:460px;
-    padding:14px 16px;border:1px solid var(--rule);border-radius:14px;
-    color:var(--dim);font-family:var(--sans);font-size:14px;line-height:1.65;text-align:center;
+    display:none;margin:8px auto 0;max-width:420px;
+    padding:7px 12px;border:1px solid var(--rule);border-radius:10px;
+    color:var(--dim);font-family:var(--sans);font-size:11px;line-height:1.4;text-align:center;
   }
-  .ios-hint b{color:var(--accent)}
-  .ios-hint svg{vertical-align:-4px;margin:0 3px;width:16px;height:16px}
+  .ios-hint b{color:var(--accent);text-shadow:none}
+  .ios-hint svg{vertical-align:-2px;margin:0 2px;width:12px;height:12px}
   body.is-ios-safari:not(.is-standalone) .ios-hint{display:block}
-  body.is-standalone .actions .install{display:none}
+  /* Hide install/top buttons by default to save space; show only if user installs */
+  .actions{display:none}
 </style>
 </head>
 <body>
 <main>
-  <!-- Sigil (matches app icon) -->
-  <svg class="sigil" viewBox="0 0 512 512" aria-hidden="true">
-    <defs>
-      <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#e8d9a8"/>
-        <stop offset="55%" stop-color="#c9a86a"/>
-        <stop offset="100%" stop-color="#8a6f3a"/>
-      </linearGradient>
-      <linearGradient id="sweep" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stop-color="#fff" stop-opacity="0"/>
-        <stop offset="45%" stop-color="#fff" stop-opacity="0"/>
-        <stop offset="50%" stop-color="#fff" stop-opacity=".85"/>
-        <stop offset="55%" stop-color="#fff" stop-opacity="0"/>
-        <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
-      </linearGradient>
-      <clipPath id="starClip">
-        <path d="M256 104 L268 244 L408 256 L268 268 L256 408 L244 268 L104 256 L244 244 Z"/>
-      </clipPath>
-    </defs>
-    <circle cx="256" cy="256" r="180" fill="none" stroke="url(#g)" stroke-width="3" opacity=".55"/>
-    <g class="star">
-      <path d="M256 104 L268 244 L408 256 L268 268 L256 408 L244 268 L104 256 L244 244 Z" fill="url(#g)"/>
-      <circle cx="256" cy="256" r="8" fill="url(#g)"/>
-    </g>
-    <g clip-path="url(#starClip)">
-      <rect class="shimmer" x="-40" y="0" width="220" height="512" fill="url(#sweep)"/>
-    </g>
-  </svg>
-
-  <h1>Pocket Card</h1>
+  <div class="head">
+    <svg class="sigil" viewBox="0 0 512 512" aria-hidden="true">
+      <defs>
+        <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#f6ecc4"/>
+          <stop offset="55%" stop-color="#e0c07a"/>
+          <stop offset="100%" stop-color="#a4824a"/>
+        </linearGradient>
+        <linearGradient id="sweep" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#fff" stop-opacity="0"/>
+          <stop offset="45%" stop-color="#fff" stop-opacity="0"/>
+          <stop offset="50%" stop-color="#fff" stop-opacity=".9"/>
+          <stop offset="55%" stop-color="#fff" stop-opacity="0"/>
+          <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+        </linearGradient>
+        <clipPath id="starClip">
+          <path d="M256 104 L268 244 L408 256 L268 268 L256 408 L244 268 L104 256 L244 244 Z"/>
+        </clipPath>
+      </defs>
+      <circle cx="256" cy="256" r="180" fill="none" stroke="url(#g)" stroke-width="3" opacity=".6"/>
+      <g class="star">
+        <path d="M256 104 L268 244 L408 256 L268 268 L256 408 L244 268 L104 256 L244 244 Z" fill="url(#g)"/>
+        <circle cx="256" cy="256" r="8" fill="url(#g)"/>
+      </g>
+      <g clip-path="url(#starClip)">
+        <rect class="shimmer" x="-40" y="0" width="220" height="512" fill="url(#sweep)"/>
+      </g>
+    </svg>
+    <h1>Pocket Card</h1>
+  </div>
   <div class="tag">"I've got it from here."</div>
 
   <div class="mantra">
-    <b>I am not 11.</b>
-    <b>I have the arsenal.</b>
+    <b>You're not a kid anymore.</b>
+    <b>You have the arsenal.</b>
     <b>The alarm is not the truth.</b>
   </div>
 
-  <p class="preamble">The anxious forecast is a hypothesis, not a verdict. Ask for evidence. Run small experiments on the fear — that's what a scientist does with a noisy signal.</p>
-
-  <div class="orn" aria-hidden="true"><span>✦</span></div>
+  <p class="preamble">The anxious forecast is a hypothesis, not a verdict. Run small experiments on the fear.</p>
 
   <h2>When the storm-brain fires</h2>
   <ol>
     <li><b>Name it.</b> One sentence. No adjectives.</li>
-    <li><b>Ask it.</b> What's the evidence? What are the real odds?</li>
-    <li><b>Choose one:</b>
-      <ul>
-        <li>Thin evidence → label "old alarm," release, return to the task.</li>
-        <li>Real evidence → write 3 prep steps. Do step 1 today.</li>
-      </ul>
-    </li>
-    <li><b>Log one good thing.</b> One sentence. Every day.</li>
+    <li><b>Ask it.</b> What's the evidence? The real odds?</li>
+    <li><b>Choose:</b> thin evidence → label "old alarm," release. Real evidence → 3 prep steps, do step 1 today.</li>
+    <li><b>Log one good thing.</b> One sentence. Daily.</li>
   </ol>
 
-  <h2>Set it down, gently</h2>
+  <h2>Set down, gently</h2>
   <ul>
-    <li>The word "stupid." It's not stupid; it's an old alarm.</li>
-    <li>The identity of the one who barely escaped. One day, not a life sentence.</li>
-    <li>Pre-living disasters with tiny probability. Rehearsing doom is a tax, not preparation.</li>
-    <li>Comparing every unknown to the Balrog. Most new things are just Tuesdays.</li>
+    <li>The word "stupid." It's an old alarm, not a flaw.</li>
+    <li>Rehearsing doom. Worry is a tax, not preparation.</li>
+    <li>Comparing every unknown to a Balrog. Most are just Tuesdays.</li>
   </ul>
 
   <h2>The lines that hold</h2>
   <ul>
-    <li><b>First arrow:</b> the fact.</li>
-    <li><b>Second arrow:</b> the story. Drop it.</li>
-    <li>"Thanks, 11-year-old me. I've got it from here."</li>
+    <li><span class="lbl">First arrow:</span> the fact. <span class="lbl">Second arrow:</span> the story. Drop it.</li>
+    <li>"Thanks, kid. I've got it from here."</li>
     <li>My life has meaning and hard-won glory.</li>
     <li>I refuse to open my arms to oblivion.</li>
   </ul>
 
-  <h2>Tonight, one question</h2>
-  <p class="evening">Did the feared thing happen? Did I handle what did?</p>
+  <p class="evening">Tonight: Did the feared thing happen? Did I handle what did?</p>
 
   <div class="close">— Accipio. Ludo. —</div>
   <div class="foot">BREATHE · NAME · CHOOSE · LOG</div>
 
   <div class="actions">
     <button class="install" id="installBtn" hidden>Install</button>
-    <button class="top" id="topBtn">Top</button>
   </div>
 
   <div class="ios-hint" role="note">
-    Install on iPhone: tap
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 8 5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>
-    <b>Share</b> → <b>Add to Home Screen</b>.
+    Install: tap
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 8 5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>
+    <b>Share</b> → <b>Add to Home Screen</b>
   </div>
 </main>
 
 <script>
-  // Top button
-  document.getElementById('topBtn').addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-
-  // Standalone detection
   const standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
   if (standalone) document.body.classList.add('is-standalone');
-
-  // iOS Safari hint (since beforeinstallprompt doesn't fire on iOS)
   const ua = window.navigator.userAgent;
   const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
   const isSafari = /^((?!chrome|android|crios|fxios|edgios).)*safari/i.test(ua);
   if (isIOS && isSafari) document.body.classList.add('is-ios-safari');
 
-  // Android/Desktop install prompt
   let deferred;
   const installBtn = document.getElementById('installBtn');
   window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferred = e;
+    e.preventDefault(); deferred = e;
     installBtn.hidden = false;
+    document.querySelector('.actions').style.display = 'flex';
   });
   installBtn.addEventListener('click', async () => {
     if (!deferred) return;
     deferred.prompt();
     await deferred.userChoice;
-    deferred = null;
-    installBtn.hidden = true;
+    deferred = null; installBtn.hidden = true;
   });
   window.addEventListener('appinstalled', () => { installBtn.hidden = true; });
 
-  // Service worker
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js').catch(() => {});
-    });
+    window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(() => {}); });
   }
 </script>
 </body>

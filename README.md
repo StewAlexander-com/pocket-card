@@ -1,7 +1,5 @@
 # Pocket Card
 
-A single-page, installable pocket reminder card. Dark, quiet, serif.
-
-Live: https://stewalexander-com.github.io/pocket-card/
+A one-page, installable pocket card. Dark, quiet, serif.
 
 — Accipio. Ludo. —
