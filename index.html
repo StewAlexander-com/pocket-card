@@ -328,7 +328,7 @@
     color:var(--accent);
     display:flex;align-items:center;justify-content:center;
     cursor:pointer;font-family:var(--sans);font-size:20px;
-    transition:background .2s ease, transform .2s ease, border-color .2s ease;
+    transition:background .2s ease, transform .2s ease, border-color .2s ease, box-shadow .3s ease;
     box-shadow:0 4px 16px rgba(0,0,0,.4);
   }
   .audio-toggle:hover{background:rgba(7,10,18,.75);border-color:var(--accent)}
@@ -337,6 +337,42 @@
   .audio-toggle .on,.audio-toggle .off{display:none}
   .audio-toggle[data-state="on"] .on{display:block}
   .audio-toggle[data-state="off"] .off{display:block}
+
+  /* Subtle "ring" pulse when muted — hints: tap me for storm noise */
+  .audio-toggle::before{
+    content:"";
+    position:absolute;inset:-1px;
+    border-radius:50%;
+    border:1px solid rgba(240,206,134,.55);
+    pointer-events:none;
+    opacity:0;
+  }
+  .audio-toggle[data-state="off"]{
+    box-shadow:0 4px 16px rgba(0,0,0,.4), 0 0 0 0 rgba(240,206,134,.35);
+    animation:audioHintGlow 2.8s ease-in-out infinite;
+  }
+  .audio-toggle[data-state="off"]::before{
+    animation:audioHintRing 2.8s ease-out infinite;
+  }
+  .audio-toggle[data-state="on"]::before{animation:none;opacity:0}
+
+  @keyframes audioHintRing{
+    0%   { transform:scale(1);   opacity:.55; }
+    70%  { transform:scale(1.55); opacity:0; }
+    100% { transform:scale(1.55); opacity:0; }
+  }
+  @keyframes audioHintGlow{
+    0%, 100% { box-shadow:0 4px 16px rgba(0,0,0,.4), 0 0 0 0 rgba(240,206,134,.35); }
+    50%      { box-shadow:0 4px 16px rgba(0,0,0,.4), 0 0 14px 3px rgba(240,206,134,.28); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .audio-toggle[data-state="off"],
+    .audio-toggle[data-state="off"]::before{ animation:none; }
+    .audio-toggle[data-state="off"]{
+      box-shadow:0 4px 16px rgba(0,0,0,.4), 0 0 10px 2px rgba(240,206,134,.25);
+    }
+  }
 
   /* iOS install hint */
   .ios-hint{
@@ -603,8 +639,8 @@
   // ─── Audio: Rain View-style iOS unlock pattern ─────────────────────────
   const thunder = document.getElementById('thunder');
   const audioToggle = document.getElementById('audioToggle');
-  const STORAGE = 'pocketcard.audio';
-  let audioOn = localStorage.getItem(STORAGE) === 'on';
+  // Always start muted on load; user must tap the speaker to enable storm sound.
+  let audioOn = false;
   // Silent MP3 element for iOS audio-session unlock
   const silentMp3 = 'data:audio/mpeg;base64,//uQxAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAACcQCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgP////////////////////////////////////////8AAAAATGFtZTMuMTAwA8MAAAAAAAAAABRgJAZAQgAAYAAAAnGMHkkIAAAAAAD/+xDEAAPH3Yz0AAR8I+rJf/AABImb9n+f4/8MACgYvgIAGJDv+xLCC1h7IHvQfeBh+IgDhQBWCAeUdUMABOJpz/9Y4V8mL/V///pvw4DUEgUv0ALAAAAWrCDKFQFIFgAUKWDZKEUqgD6iAAAhCQkBhERgMAEgAg0CFAwh';
   const silent = new Audio(silentMp3);
@@ -645,17 +681,10 @@
   audioToggle.addEventListener('click', (e) => {
     e.stopPropagation();
     audioOn = !audioOn;
-    localStorage.setItem(STORAGE, audioOn ? 'on' : 'off');
     updateToggleUI();
     if (audioOn) activateAudio();
     else pauseAudio();
   });
-
-  // If user had audio on last time, try to resume after first gesture
-  if (audioOn) {
-    document.addEventListener('touchend', firstGestureUnlock, { once: true, passive: true });
-    document.addEventListener('click', firstGestureUnlock, { once: true, passive: true });
-  }
 
   // Resume video if backgrounded (iOS pauses video on tab blur)
   document.addEventListener('visibilitychange', () => {
