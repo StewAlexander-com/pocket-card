@@ -1,5 +1,5 @@
 // Pocket Card — offline-first service worker
-const VERSION = 'pocket-v7';
+const VERSION = 'pocket-v8';
 const ASSETS = [
   './',
   './index.html',
