@@ -1,5 +1,5 @@
 // Pocket Card — offline-first service worker
-const VERSION = 'pocket-v2';
+const VERSION = 'pocket-v3';
 const ASSETS = [
   './',
   './index.html',
@@ -10,7 +10,9 @@ const ASSETS = [
   './icon-512.png',
   './icon-512-maskable.png',
   './apple-touch-icon.png',
-  './favicon-32.png'
+  './favicon-32.png',
+  './assets/storm-mobile.mp4',
+  './assets/rain-thunder.mp3'
 ];
 
 self.addEventListener('install', (e) => {
@@ -28,11 +30,15 @@ self.addEventListener('activate', (e) => {
 self.addEventListener('fetch', (e) => {
   const req = e.request;
   if (req.method !== 'GET') return;
+  // Never intercept range requests for media — they must go to network
+  if (req.headers.has('range')) return;
   e.respondWith(
     caches.match(req).then((cached) => {
       const network = fetch(req).then((res) => {
-        const copy = res.clone();
-        caches.open(VERSION).then((c) => c.put(req, copy)).catch(() => {});
+        if (res && res.ok && res.type === 'basic') {
+          const copy = res.clone();
+          caches.open(VERSION).then((c) => c.put(req, copy)).catch(() => {});
+        }
         return res;
       }).catch(() => cached);
       return cached || network;

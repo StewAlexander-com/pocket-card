@@ -1,0 +1,13 @@
+Pocket Card — audio credits
+===========================
+
+Thunder / rain ambience (rain-thunder.mp3)
+------------------------------------------
+Sourced unchanged from Rain View (https://github.com/StewAlexander-com/rain-view)
+where it ships under the original Rain View bundle's licensing. If you replace
+this file, update attribution here.
+
+Video (storm-mobile.mp4, storm-desktop.mp4)
+-------------------------------------------
+Procedurally rendered in this repository (see _build/render-storm.js).
+Original work by the repository owner. Free to reuse.
