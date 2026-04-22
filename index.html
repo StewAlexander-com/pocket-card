@@ -23,7 +23,7 @@
 <link rel="mask-icon" href="./icon.svg" color="#e0c07a"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Days+One&family=Hammersmith+One&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,500&family=Inter:wght@500;600;700&display=swap"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Coda+Caption:wght@800&family=Days+One&family=Hammersmith+One&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,500&family=Inter:wght@500;600;700&display=swap"/>
 <style>
   :root{
     --bg:#070a12;
@@ -227,6 +227,41 @@
     text-shadow:0 1px 2px rgba(0,0,0,.9), 0 0 18px rgba(0,0,0,.55);
   }
 
+  /* "Breathe" title above the box — cream→lightning-blue 45° gradient */
+  .breathe-title{
+    display:block;text-align:center;
+    /* Coda Caption only ships at weight 800 (heavy display cut) on Google Fonts. */
+    font-family:"Coda Caption","Coda","Days One",var(--sans);
+    font-weight:800;
+    font-size:44px;letter-spacing:.03em;
+    line-height:1;margin:8px 0 4px;
+    /* Base color: same warm cream as the rest of the card */
+    color:#fbf4d6;
+    /* 45° gradient from cream (top-left) → lightning blue-white (bottom-right),
+       with a wider canvas that slowly drifts for a clean shimmer. */
+    background-image:linear-gradient(135deg,
+      #fbf4d6 0%,
+      #fbf4d6 22%,
+      #f9f2d0 38%,
+      #ffffff 52%,
+      #dfeaff 66%,
+      #a8c8ff 82%,
+      #7fb2ff 100%);
+    background-size:220% 220%;
+    background-position:0% 0%;
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;
+    text-shadow:none;
+    animation:breatheSweep 9s linear infinite;
+  }
+  @keyframes breatheSweep{
+    0%  {background-position:0% 0%}
+    100%{background-position:100% 100%}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .breathe-title{animation:none;background-position:50% 50%}
+  }
+
   /* Box-breathing diagram: square with labeled corners + arrow edges + traveling dot */
   .boxbreath{
     --box-size: min(300px, 78vw);
@@ -409,6 +444,8 @@
         <circle cx="256" cy="256" r="8" fill="url(#g)"/>
       </svg>
     </div>
+    <div class="breathe-title" aria-hidden="true">Breathe</div>
+
     <!-- Box-breathing diagram: square with IN (top edge, 4s), HOLD (right edge, 4s), OUT (bottom edge, 6s).
          Fourth edge is the gentle "return" back to start. Accessible label provided for screen readers. -->
     <svg class="boxbreath" viewBox="0 0 320 320" role="img"
