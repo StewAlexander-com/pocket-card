@@ -273,6 +273,27 @@
   }
   .footback a:hover,.footback a:focus-visible{color:var(--accent);outline:none}
 
+  /* Toast — transient feedback for import/recovery */
+  .toast{
+    position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));
+    transform:translateX(-50%) translateY(14px);
+    z-index:10;pointer-events:none;
+    max-width:min(88vw,460px);
+    padding:12px 18px;border-radius:12px;
+    background:rgba(7,10,18,.78);
+    border:1px solid var(--rule);
+    color:var(--dim);
+    font-family:var(--sans);font-size:13px;letter-spacing:.12em;
+    text-align:center;line-height:1.5;font-weight:600;
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    box-shadow:0 8px 30px rgba(0,0,0,.55);
+    opacity:0;transition:opacity .28s ease, transform .28s ease;
+    text-shadow:none;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .toast[data-tone="warn"]{border-color:var(--danger);color:var(--danger)}
+  .toast[data-tone="ok"]{border-color:var(--accent);color:var(--accent-2)}
+
   @media (min-width:680px){
     body{font-size:24px}
     h1.pagetitle{font-size:50px}
@@ -335,8 +356,10 @@
   <!-- Controls -->
   <div class="controls">
     <button class="btn" id="exportBtn" type="button">Export .txt</button>
+    <button class="btn" id="importBtn" type="button">Import .txt</button>
     <button class="btn danger" id="eraseBtn" type="button">Erase all</button>
   </div>
+  <input type="file" id="importFile" accept=".txt,text/plain" style="position:absolute;left:-9999px;opacity:0;pointer-events:none" tabindex="-1" aria-hidden="true"/>
 
   <div class="confirm" id="eraseConfirm" role="alertdialog" aria-labelledby="eraseMsg">
     <p id="eraseMsg">Erase every entry on this device? This cannot be undone.</p>

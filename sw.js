@@ -12,7 +12,7 @@
 //   - Range requests            → pass through (Cache API can't serve 206 Partial).
 //   - Non-GET                   → pass through.
 
-const CACHE_NAME = 'pocket-card-v5-2026-04-24-log';
+const CACHE_NAME = 'pocket-card-v6-2026-04-24-import';
 
 // Pre-cached on install. Using relative paths so it works from any GH Pages sub-path.
 const PRECACHE = [
