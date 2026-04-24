@@ -319,22 +319,29 @@
   }
   .foot{
     color:var(--fg);
-    font-family:var(--sans);font-size:14px;letter-spacing:.22em;font-weight:600;
-    margin-top:8px;
+    font-family:var(--serif);font-style:italic;
+    font-size:21px;letter-spacing:.02em;font-weight:600;
+    margin-top:10px;
     display:flex;justify-content:center;align-items:center;gap:0;flex-wrap:wrap;
+    line-height:1.2;
   }
   .foot a{
     color:var(--fg);text-decoration:none;
-    padding:6px 9px;border-radius:6px;
+    padding:10px 9px;border-radius:8px;
+    min-height:44px;display:inline-flex;align-items:center;
     transition:color .2s ease, text-shadow .2s ease, transform .15s ease;
     -webkit-tap-highlight-color:transparent;
     text-shadow:var(--halo);
     position:relative;
   }
+  @media (min-width:420px){
+    .foot{font-size:23px;letter-spacing:.03em}
+    .foot a{padding:10px 14px}
+  }
   /* Dot separators between links. Hidden at wrap points via :last-child check. */
   .foot a:not(:last-child)::after{
     content:"·";position:absolute;right:-4px;top:50%;transform:translateY(-50%);
-    color:var(--dim);opacity:.55;letter-spacing:0;font-weight:400;
+    color:var(--dim);opacity:.6;letter-spacing:0;font-weight:500;font-style:normal;
     pointer-events:none;
   }
   .foot a:hover,.foot a:focus-visible{
@@ -343,14 +350,11 @@
   }
   .foot a:active{transform:scale(.97)}
 
-  /* LOG — italic serif + slow gold shimmer. The only moving word in the foot,
-     chosen because it's the only action that writes to the device. */
+  /* LOG — same italic serif as its siblings, but with a slow gold shimmer.
+     The only moving word in the foot, because it's the only action that
+     writes to the device. */
   .foot a.log-link{
-    font-family:var(--serif);
-    font-style:italic;
-    font-weight:600;
-    font-size:17px;          /* optical match for italic serif next to the sans caps */
-    letter-spacing:.14em;    /* a touch tighter than the sans siblings for italic rhythm */
+    /* inherits font-family/style/weight/size from .foot */
     /* Gold-gradient fill with a moving highlight band. Cream base → bright
        gold sweep → back to cream, travelling left-to-right. */
     background-image:linear-gradient(
@@ -630,9 +634,9 @@
     <div class="close">— Accipio. Ludo. —</div>
     <div class="close-gloss">I accept what is — and I play anyway.</div>
     <nav class="foot" aria-label="Card actions">
-      <a href="#breathe-anchor">BREATHE</a>
-      <a href="#name-anchor">NAME</a>
-      <a href="#choose-anchor">CHOOSE</a>
+      <a href="#breathe-anchor">Breathe</a>
+      <a href="#name-anchor">Name</a>
+      <a href="#choose-anchor">Choose</a>
       <a class="log-link" href="./log/">Log</a>
     </nav>
   </div>
