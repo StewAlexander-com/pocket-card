@@ -88,7 +88,7 @@
     max-width:640px;margin:0 auto;
     padding:
       calc(22px + env(safe-area-inset-top)) 24px
-      calc(34px + env(safe-area-inset-bottom));
+      calc(90px + env(safe-area-inset-bottom));
     text-shadow:var(--halo);
   }
 
@@ -319,8 +319,33 @@
   }
   .foot{
     color:var(--fg);
-    font-family:var(--sans);font-size:15px;letter-spacing:.30em;font-weight:600;
+    font-family:var(--sans);font-size:14px;letter-spacing:.22em;font-weight:600;
     margin-top:8px;
+    display:flex;justify-content:center;align-items:center;gap:0;flex-wrap:wrap;
+  }
+  .foot a{
+    color:var(--fg);text-decoration:none;
+    padding:6px 9px;border-radius:6px;
+    transition:color .2s ease, text-shadow .2s ease, transform .15s ease;
+    -webkit-tap-highlight-color:transparent;
+    text-shadow:var(--halo);
+    position:relative;
+  }
+  /* Dot separators between links. Hidden at wrap points via :last-child check. */
+  .foot a:not(:last-child)::after{
+    content:"·";position:absolute;right:-4px;top:50%;transform:translateY(-50%);
+    color:var(--dim);opacity:.55;letter-spacing:0;font-weight:400;
+    pointer-events:none;
+  }
+  .foot a:hover,.foot a:focus-visible{
+    color:var(--accent);outline:none;
+    text-shadow:0 1px 2px rgba(0,0,0,.9), 0 0 18px rgba(240,206,134,.45);
+  }
+  .foot a:active{transform:scale(.97)}
+  html{scroll-behavior:smooth;scroll-padding-top:20px}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    .foot a{transition:none}
   }
 
   /* Floating audio toggle (bottom-right) */
@@ -453,11 +478,11 @@
 
   <p class="preamble">The anxious forecast is a guess, not a verdict. It's a thought, not a fact. Test it — ask for evidence.</p>
 
-  <h2>When the storm-brain fires</h2>
+  <h2 id="name-anchor">When the storm-brain fires</h2>
   <ol>
     <li><b>Name it.</b> One plain sentence. No adjectives, no drama.</li>
     <li><b>Check the evidence.</b> What's actually true? What's the worst, the likely, the best case?</li>
-    <li><b>Choose:</b> if the evidence is thin, call it an <em>old alarm</em> and let it pass. If it's real, write three small prep steps and do the first one today.</li>
+    <li id="choose-anchor"><b>Choose:</b> if the evidence is thin, call it an <em>old alarm</em> and let it pass. If it's real, write three small prep steps and do the first one today.</li>
     <li><b>Log one good thing</b> — and one thing you handled. One sentence each. Every day.</li>
   </ol>
 
@@ -490,7 +515,7 @@
 
     <!-- Box-breathing diagram: square with IN (top edge, 4s), HOLD (right edge, 4s), OUT (bottom edge, 6s).
          Fourth edge is the gentle "return" back to start. Accessible label provided for screen readers. -->
-    <svg class="boxbreath" viewBox="0 0 320 320" role="img"
+    <svg id="breathe-anchor" class="boxbreath" viewBox="0 0 320 320" role="img"
          aria-label="Box breathing: breathe in for four, hold for four, breathe out for six, return to the task.">
       <!-- Invisible path defining the full loop (top → right → bottom → left back to start).
            Corners are slightly inset so labels outside the box don't clip. -->
@@ -557,7 +582,12 @@
     <p class="breath-return">Name five things you can see. Then return to the task in front of you.</p>
     <div class="close">— Accipio. Ludo. —</div>
     <div class="close-gloss">I accept what is — and I play anyway.</div>
-    <div class="foot">BREATHE · NAME · CHOOSE · LOG</div>
+    <nav class="foot" aria-label="Card actions">
+      <a href="#breathe-anchor">BREATHE</a>
+      <a href="#name-anchor">NAME</a>
+      <a href="#choose-anchor">CHOOSE</a>
+      <a href="./log/">LOG</a>
+    </nav>
   </div>
 
   <div class="ios-hint" role="note">

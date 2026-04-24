@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<!-- Strict CSP: on-device only. No network beyond fonts (Google) + same-origin assets.
+     No inline JS evaluation allowed except the single <script> block below, authorized via 'self' + sha is fine since it's same-origin. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self' blob:; connect-src 'self'; form-action 'none'; base-uri 'self'"/>
+<meta name="referrer" content="no-referrer"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Pocket Log"/>
+<meta name="application-name" content="Pocket Card — Log"/>
+<meta name="theme-color" content="#070a12"/>
+<meta name="color-scheme" content="dark"/>
+<meta name="description" content="A private, on-device log. One sentence. Every day."/>
+<title>Log — Pocket Card</title>
+<link rel="manifest" href="../manifest.webmanifest"/>
+<link rel="icon" type="image/svg+xml" href="../icon.svg"/>
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png"/>
+<link rel="apple-touch-icon" href="../apple-touch-icon.png"/>
+<link rel="mask-icon" href="../icon.svg" color="#e0c07a"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Coda+Caption:wght@800&family=Days+One&family=Hammersmith+One&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@500;600;700&display=swap"/>
+<style>
+  :root{
+    --bg:#070a12;
+    --fg:#f7f0d8;
+    --fg-bold:#fbf6e6;
+    --fg-cool:#f1f4ff;
+    --dim:#d8d3bb;
+    --rule:#4a4636;
+    --accent:#f0ce86;
+    --accent-2:#f8ecc0;
+    --danger:#e8a0a0;
+    --serif:"Cormorant Garamond","Georgia",ui-serif,serif;
+    --sans:"Inter",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+    --halo:
+      0 1px 2px rgba(0,0,0,.85),
+      0 0 10px rgba(0,0,0,.75),
+      0 0 24px rgba(0,0,0,.55);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--fg);min-height:100vh;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+  body{
+    font-family:var(--serif);
+    font-size:22px;
+    line-height:1.55;
+    background:var(--bg);
+    overflow-x:hidden;
+  }
+
+  /* Same storm bg + scrim as the card */
+  .bg{position:fixed;inset:0;z-index:0;overflow:hidden;background:#070a12}
+  .bg video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
+  .bg video.b{opacity:0;transition:opacity 1.5s ease}
+  .bg video.b.visible{opacity:1}
+  .scrim{
+    position:fixed;inset:0;z-index:1;pointer-events:none;
+    background:
+      linear-gradient(180deg,
+        rgba(7,10,18,.25) 0%,
+        rgba(7,10,18,.45) 12%,
+        rgba(7,10,18,.70) 30%,
+        rgba(7,10,18,.72) 80%,
+        rgba(7,10,18,.50) 100%
+      );
+  }
+  .scrim::after{
+    content:"";position:absolute;inset:0;opacity:.06;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  main{
+    position:relative;z-index:2;
+    max-width:680px;margin:0 auto;
+    padding:
+      calc(20px + env(safe-area-inset-top)) 22px
+      calc(40px + env(safe-area-inset-bottom));
+    text-shadow:var(--halo);
+  }
+
+  /* Header */
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;
+    margin:0 0 16px;
+  }
+  .back{
+    color:var(--dim);text-decoration:none;
+    font-family:var(--sans);font-size:13px;letter-spacing:.24em;text-transform:uppercase;
+    font-weight:600;
+    padding:8px 10px;margin-left:-10px;border-radius:8px;
+    -webkit-tap-highlight-color:transparent;
+    transition:color .2s ease;
+  }
+  .back:hover,.back:focus-visible{color:var(--accent);outline:none}
+  .back::before{content:"← ";opacity:.8}
+  .eyebrow{
+    font-family:var(--sans);font-size:13px;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--accent);font-weight:700;
+  }
+
+  h1.pagetitle{
+    font-family:var(--serif);font-weight:600;font-style:italic;
+    font-size:42px;line-height:1.1;margin:6px 0 4px;text-align:center;
+    color:var(--fg-bold);letter-spacing:.005em;
+  }
+  .subtitle{
+    text-align:center;font-family:var(--serif);font-style:italic;
+    color:var(--dim);font-size:19px;margin:0 0 8px;
+  }
+  .privacy{
+    text-align:center;font-family:var(--sans);font-size:12px;letter-spacing:.20em;
+    text-transform:uppercase;color:var(--dim);opacity:.75;margin:0 0 22px;font-weight:600;
+  }
+
+  /* Dramatic date header — same serif, same cream accent, same dark bg */
+  .date-hero{
+    margin:26px 0 14px;text-align:center;
+  }
+  .date-hero .weekday{
+    display:block;
+    font-family:var(--serif);font-style:italic;font-weight:500;
+    font-size:22px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--accent);opacity:.9;margin-bottom:4px;
+  }
+  .date-hero .daynum{
+    display:block;
+    font-family:var(--serif);font-weight:600;font-style:italic;
+    font-size:92px;line-height:.95;letter-spacing:-.01em;
+    /* Subtle gold gradient on the numeral — same palette as sigil */
+    background-image:linear-gradient(180deg,#fbf1cd 0%,#f0ce86 55%,#b38d4e 100%);
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;color:#f0ce86;
+    text-shadow:none;
+    filter:drop-shadow(0 2px 10px rgba(0,0,0,.55));
+  }
+  .date-hero .monthyear{
+    display:block;
+    font-family:var(--serif);font-style:italic;font-weight:500;
+    font-size:24px;letter-spacing:.14em;
+    color:var(--fg-bold);margin-top:2px;
+  }
+  .date-hero .rule{
+    width:80px;height:1px;margin:14px auto 0;
+    background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.7;
+  }
+
+  /* Today's editor */
+  .editor{
+    margin:18px 0 28px;
+  }
+  .editor label{
+    display:block;font-family:var(--sans);font-size:12px;letter-spacing:.24em;
+    text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:8px;
+  }
+  .editor textarea{
+    width:100%;
+    min-height:140px;
+    resize:vertical;
+    background:rgba(7,10,18,.55);
+    border:1px solid var(--rule);
+    border-radius:14px;
+    padding:16px 18px;
+    color:var(--fg);
+    font-family:var(--serif);
+    font-size:22px;line-height:1.55;
+    outline:none;
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+    transition:border-color .2s ease, box-shadow .2s ease;
+    text-shadow:none;
+  }
+  .editor textarea::placeholder{color:var(--dim);opacity:.55;font-style:italic}
+  .editor textarea:focus{
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(240,206,134,.18);
+  }
+  .editor .meta{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-top:10px;font-family:var(--sans);font-size:12px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--dim);font-weight:600;
+  }
+  .editor .meta .saved{color:var(--accent);opacity:0;transition:opacity .4s ease}
+  .editor .meta .saved.show{opacity:1}
+
+  /* History section */
+  .history h2{
+    font-family:var(--sans);font-size:15px;letter-spacing:.26em;text-transform:uppercase;
+    color:var(--accent);border-bottom:1px solid var(--rule);
+    padding-bottom:10px;margin:30px 0 16px;font-weight:700;
+  }
+  .entry{
+    margin:0 0 20px;padding:14px 16px 14px 18px;
+    border-left:2px solid var(--rule);
+    background:rgba(7,10,18,.30);
+    border-radius:0 10px 10px 0;
+    position:relative;
+    transition:border-color .2s ease;
+  }
+  .entry:hover{border-left-color:var(--accent)}
+  .entry .ehead{
+    display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+    margin-bottom:6px;
+  }
+  .entry .edate{
+    font-family:var(--serif);font-style:italic;font-weight:600;
+    color:var(--accent);font-size:18px;letter-spacing:.02em;
+  }
+  .entry .edel{
+    background:none;border:none;cursor:pointer;
+    color:var(--dim);opacity:.55;
+    font-family:var(--sans);font-size:20px;line-height:1;
+    padding:4px 8px;border-radius:6px;
+    transition:opacity .2s ease, color .2s ease, background .2s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .entry .edel:hover,.entry .edel:focus-visible{
+    color:var(--danger);opacity:1;outline:none;
+    background:rgba(232,160,160,.08);
+  }
+  .entry .ebody{
+    font-family:var(--serif);font-size:20px;line-height:1.55;color:var(--fg);
+    white-space:pre-wrap;word-wrap:break-word;
+    text-shadow:none;
+  }
+  .empty{
+    text-align:center;font-family:var(--serif);font-style:italic;
+    color:var(--dim);opacity:.75;padding:24px 0;font-size:19px;
+  }
+
+  /* Controls */
+  .controls{
+    display:flex;gap:10px;justify-content:center;flex-wrap:wrap;
+    margin:28px 0 0;padding-top:20px;border-top:1px solid var(--rule);
+  }
+  .btn{
+    background:rgba(7,10,18,.55);border:1px solid var(--rule);
+    color:var(--fg);
+    font-family:var(--sans);font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;
+    padding:10px 18px;border-radius:10px;cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+    transition:border-color .2s ease, color .2s ease, background .2s ease, transform .15s ease;
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+    text-shadow:var(--halo);
+  }
+  .btn:hover,.btn:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
+  .btn:active{transform:scale(.97)}
+  .btn.danger:hover,.btn.danger:focus-visible{border-color:var(--danger);color:var(--danger)}
+
+  /* Erase-all confirm */
+  .confirm{
+    display:none;margin:18px auto 0;max-width:520px;
+    padding:16px 20px;border:1px solid var(--danger);border-radius:14px;
+    background:rgba(40,10,10,.35);backdrop-filter:blur(8px);
+    text-align:center;
+  }
+  .confirm.open{display:block}
+  .confirm p{margin:0 0 12px;font-family:var(--serif);font-style:italic;font-size:19px;color:var(--fg)}
+  .confirm .btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+
+  /* Foot nav back to card */
+  .footback{
+    margin-top:36px;padding-top:20px;border-top:1px solid var(--rule);
+    text-align:center;
+  }
+  .footback a{
+    color:var(--fg);text-decoration:none;
+    font-family:var(--sans);font-size:13px;letter-spacing:.30em;text-transform:uppercase;font-weight:600;
+    padding:8px 10px;border-radius:6px;
+    transition:color .2s ease;text-shadow:var(--halo);
+  }
+  .footback a:hover,.footback a:focus-visible{color:var(--accent);outline:none}
+
+  @media (min-width:680px){
+    body{font-size:24px}
+    h1.pagetitle{font-size:50px}
+    .date-hero .daynum{font-size:120px}
+    .entry .ebody{font-size:22px}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important}
+  }
+</style>
+</head>
+<body>
+
+<!-- Same storm video bg -->
+<div class="bg" aria-hidden="true">
+  <video id="vidA" muted loop playsinline preload="auto" poster="../icon-512.png"></video>
+  <video id="vidB" class="b" muted loop playsinline preload="auto"></video>
+</div>
+<div class="scrim" aria-hidden="true"></div>
+
+<main>
+  <div class="nav">
+    <a class="back" href="../">Card</a>
+    <span class="eyebrow">Log</span>
+  </div>
+
+  <h1 class="pagetitle">One sentence.</h1>
+  <p class="subtitle">One good thing. One thing I handled.</p>
+  <p class="privacy">On this device only · No account · No network</p>
+
+  <!-- Dramatic date header -->
+  <div class="date-hero" aria-hidden="false">
+    <span class="weekday" id="hWeekday"></span>
+    <span class="daynum" id="hDay"></span>
+    <span class="monthyear" id="hMonthYear"></span>
+    <span class="rule" aria-hidden="true"></span>
+  </div>
+
+  <!-- Today's editor -->
+  <section class="editor" aria-label="Today's entry">
+    <label for="todayText">Today</label>
+    <textarea id="todayText"
+              maxlength="2000"
+              autocomplete="off"
+              autocorrect="on"
+              spellcheck="true"
+              placeholder="One good thing. One thing I handled."></textarea>
+    <div class="meta">
+      <span id="charCount">0 / 2000</span>
+      <span class="saved" id="savedIndicator">Saved</span>
+    </div>
+  </section>
+
+  <!-- History -->
+  <section class="history" aria-label="Previous entries">
+    <h2>Previously</h2>
+    <div id="historyList"></div>
+  </section>
+
+  <!-- Controls -->
+  <div class="controls">
+    <button class="btn" id="exportBtn" type="button">Export .txt</button>
+    <button class="btn danger" id="eraseBtn" type="button">Erase all</button>
+  </div>
+
+  <div class="confirm" id="eraseConfirm" role="alertdialog" aria-labelledby="eraseMsg">
+    <p id="eraseMsg">Erase every entry on this device? This cannot be undone.</p>
+    <div class="btns">
+      <button class="btn" id="eraseCancel" type="button">Cancel</button>
+      <button class="btn danger" id="eraseConfirmBtn" type="button">Yes, erase all</button>
+    </div>
+  </div>
+
+  <div class="footback">
+    <a href="../">— Return to the card —</a>
+  </div>
+</main>
+
+<script src="./log.js"></script>
+</body>
+</html>

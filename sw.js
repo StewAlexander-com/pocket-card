@@ -12,12 +12,15 @@
 //   - Range requests            → pass through (Cache API can't serve 206 Partial).
 //   - Non-GET                   → pass through.
 
-const CACHE_NAME = 'pocket-card-v3-2026-04-22-mute';
+const CACHE_NAME = 'pocket-card-v5-2026-04-24-log';
 
 // Pre-cached on install. Using relative paths so it works from any GH Pages sub-path.
 const PRECACHE = [
   './',
   './index.html',
+  './log/',
+  './log/index.html',
+  './log/log.js',
   './manifest.webmanifest',
   './icon.svg',
   './icon-maskable.svg',
@@ -97,6 +100,9 @@ self.addEventListener('fetch', (event) => {
 // Network-first for HTML with a short timeout.
 async function handleNavigation(event) {
   const cache = await caches.open(CACHE_NAME);
+  const reqUrl = new URL(event.request.url);
+  // Keep cache key scoped to the actual path (so /log/ and / don't overwrite each other).
+  const cacheKey = reqUrl.pathname.endsWith('/log/') ? './log/index.html' : './index.html';
 
   // Prefer a navigation preload response if available.
   const preload = event.preloadResponse ? await event.preloadResponse.catch(() => null) : null;
@@ -106,7 +112,7 @@ async function handleNavigation(event) {
     try {
       const res = preload || await fetchWithTimeout(event.request, NAV_TIMEOUT_MS);
       if (res && res.ok) {
-        cache.put('./index.html', res.clone()).catch(() => {});
+        cache.put(cacheKey, res.clone()).catch(() => {});
       }
       return res;
     } catch (_) {
@@ -117,8 +123,12 @@ async function handleNavigation(event) {
   const fresh = await network;
   if (fresh) return fresh;
 
-  // Offline or timed out → serve the cached shell.
-  const cached = await cache.match('./index.html') || await cache.match('./');
+  // Offline or timed out → serve the cached version matching this URL first,
+  // then fall back to the card shell so navigation still resolves.
+  const cached = await cache.match(cacheKey)
+              || await cache.match(event.request)
+              || await cache.match('./index.html')
+              || await cache.match('./');
   if (cached) return cached;
 
   // Last-ditch: a minimal offline response.
